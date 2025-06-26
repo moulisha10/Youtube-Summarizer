@@ -10,10 +10,9 @@ load_dotenv()
 
 app = FastAPI()
 
-# Load API key from environment variable
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
-# Fetch YouTube transcript
+
 def fetch_youtube_transcript(video_id):
     try:
         transcript = YouTubeTranscriptApi.get_transcript(video_id)
@@ -23,7 +22,7 @@ def fetch_youtube_transcript(video_id):
         print(f"❌ Error fetching transcript: {e}")
         return None
 
-# Gemini call for summary
+
 def summarize_transcript_with_gemini(transcript):
     client = genai.Client(api_key=GEMINI_API_KEY)
     model = "gemini-2.0-flash"
@@ -48,7 +47,7 @@ Transcript:
     )
     return response.text
 
-# Extract video ID from YouTube URL
+
 def extract_youtube_id(url):
     if "youtube.com/watch?v=" in url:
         return url.split("v=")[1].split("&")[0]
@@ -57,7 +56,7 @@ def extract_youtube_id(url):
     else:
         raise ValueError("Invalid YouTube URL")
 
-# API route
+
 @app.get("/summarize")
 def get_summary(url: str = Query(..., description="YouTube video URL")):
     try:
