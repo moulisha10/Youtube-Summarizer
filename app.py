@@ -66,11 +66,11 @@ def get_summary(url: str = Query(..., description="YouTube video URL")):
         if transcript:
             summary_text = summarize_transcript_with_gemini(transcript)
             try:
-                # Try extracting JSON block from Gemini output
+                
                 start = summary_text.find('{')
                 end = summary_text.rfind('}') + 1
                 json_output = summary_text[start:end]
-                return JSONResponse(content=eval(json_output))  # or use json.loads() if valid
+                return JSONResponse(content=eval(json_output))  
             except:
                 return {"raw_output": summary_text}
         else:
